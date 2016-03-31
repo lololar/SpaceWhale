@@ -6,6 +6,7 @@ public class HookShot : MonoBehaviour
 {
     public float _range;
 
+    GameObject _hook;
     GameObject _hookPoint;
     public float _minDistanceUpPlateforme;
     public float _timeAtMaxRange;
@@ -15,7 +16,7 @@ public class HookShot : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        _hook = GameObject.FindGameObjectWithTag("Hook");
     }
 
     // Update is called once per frame
@@ -23,7 +24,7 @@ public class HookShot : MonoBehaviour
     {
         if(_hookshot == null)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = new Ray(_hook.transform.position, _hook.transform.forward);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, _range) && hit.collider.gameObject && hit.collider.gameObject.CompareTag("HookZone"))
             {

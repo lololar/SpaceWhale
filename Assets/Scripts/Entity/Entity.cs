@@ -30,9 +30,9 @@ public class Entity : MonoBehaviour
         _render = GetComponent<Renderer>();
     }
 
-    public virtual void Attack(Entity other)
+    public virtual void Attack(Entity other, float ratio)
     {
-        other.Hit(_damage);
+        other.Hit(_damage * ratio);
     }
 
     public virtual void Hit(float damage)
@@ -74,7 +74,6 @@ public class Entity : MonoBehaviour
         {
             if(_render && _hit && _normal)
             {
-                Debug.Log("IsRender");
                 if(!hitRender)
                 {
                     _render.material = _normal;

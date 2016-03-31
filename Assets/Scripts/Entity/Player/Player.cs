@@ -6,6 +6,8 @@ public class Player : Entity {
 
     Coroutine animAtt;
 
+    public float _CACDamageRatio;
+
     public override void Start()
     {
         base.Start();
@@ -25,7 +27,7 @@ public class Player : Entity {
     {
         for (int i = 0; i < _targets.Count; i++)
         {
-            Attack(_targets[i]);
+            Attack(_targets[i], _CACDamageRatio);
         }
         yield return new WaitForSeconds(_delayAttack);
         animAtt = null;
