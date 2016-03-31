@@ -17,7 +17,7 @@ public class Player : Entity {
 
 
     void Update () {
-	    if(Input.GetMouseButtonDown(0) && animAtt == null)
+	    if(Input.GetButtonDown("CAC") && animAtt == null)
         {
             animAtt = StartCoroutine(AttackAnim());
         }

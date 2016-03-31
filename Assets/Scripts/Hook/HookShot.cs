@@ -40,7 +40,7 @@ public class HookShot : MonoBehaviour
                 _hookPoint = null;
             }
         
-            if (Input.GetMouseButtonDown(1) && _hookPoint)
+            if (Input.GetButtonDown("Hook") && _hookPoint)
             {
                 Debug.Log("HookShot");
                 _hookshot = StartCoroutine(Hookshot());

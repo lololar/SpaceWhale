@@ -11,6 +11,7 @@ public class MoveCamera : MonoBehaviour
     public float _maxXRotation;
 
     public Vector2 _mouseSensitivity;
+    public Vector2 _gamepadSensitivity;
     
     void Start()
     {
@@ -22,8 +23,8 @@ public class MoveCamera : MonoBehaviour
     
     void Update()
     {
-        float x = Input.GetAxis("Mouse Y") * _mouseSensitivity.y + _cameraPivot.eulerAngles.x;
-        float y = -Input.GetAxis("Mouse X") * _mouseSensitivity.x + _cameraPivot.eulerAngles.y;
+        float x = Input.GetAxis("Mouse Y") * _mouseSensitivity.y + _gamepadSensitivity.y * Input.GetAxis("Vertical2") + _cameraPivot.eulerAngles.x;
+        float y = -Input.GetAxis("Mouse X") * _mouseSensitivity.x + _gamepadSensitivity.y * -Input.GetAxis("Horizontal2") + _cameraPivot.eulerAngles.y;
 
         _cameraPivot.rotation = Quaternion.Euler(x, y, 0.0f);
 
@@ -38,7 +39,6 @@ public class MoveCamera : MonoBehaviour
                 _cameraPivot.eulerAngles = new Vector3(360f - _minXRotation, _cameraPivot.eulerAngles.y, _cameraPivot.eulerAngles.z);
             }
         }
-
 
         if (Application.isEditor && Input.GetKeyDown(KeyCode.Escape))
         {

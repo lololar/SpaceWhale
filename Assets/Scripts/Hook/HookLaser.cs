@@ -46,7 +46,7 @@ public class HookLaser : MonoBehaviour {
                 _enemy = null;
             }
 
-            if (Input.GetMouseButtonDown(2) && _enemy)
+            if (Input.GetButtonDown("Laser") && _enemy)
             {
                 Debug.Log("Laser");
                 _player.Attack(_enemy.GetComponent<Entity>(), _laserDamageRatio);
