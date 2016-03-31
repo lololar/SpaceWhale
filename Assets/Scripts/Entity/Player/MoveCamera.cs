@@ -15,16 +15,16 @@ public class MoveCamera : MonoBehaviour
     
     void Start()
     {
-        _cameraPivot = transform.FindChild("Pivot");
-        _cameraScript = _cameraPivot.FindChild("Camera").GetComponent<Camera>();
+        _cameraPivot = transform;
+        _cameraScript = transform.FindChild("Pivot").FindChild("Camera").GetComponent<Camera>();
         Cursor.lockState = CursorLockMode.Locked;
         //Cursor.visible = false;
     }
     
     void Update()
     {
-        float x = Input.GetAxis("Mouse Y") * _mouseSensitivity.y + _gamepadSensitivity.y * Input.GetAxis("Vertical2") + _cameraPivot.eulerAngles.x;
-        float y = -Input.GetAxis("Mouse X") * _mouseSensitivity.x + _gamepadSensitivity.y * -Input.GetAxis("Horizontal2") + _cameraPivot.eulerAngles.y;
+        float x = -Input.GetAxis("Mouse Y") * _mouseSensitivity.y + _gamepadSensitivity.y * Input.GetAxis("Vertical2") + _cameraPivot.eulerAngles.x;
+        float y = Input.GetAxis("Mouse X") * _mouseSensitivity.x + _gamepadSensitivity.y * Input.GetAxis("Horizontal2") + _cameraPivot.eulerAngles.y;
 
         _cameraPivot.rotation = Quaternion.Euler(x, y, 0.0f);
 

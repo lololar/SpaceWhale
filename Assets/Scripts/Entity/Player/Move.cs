@@ -4,6 +4,7 @@ using System.Collections;
 public class Move : MonoBehaviour {
 
     Rigidbody _myRigid;
+    Vector3 direction = Vector3.right + Vector3.forward;
 
     public float _speed;
     
@@ -17,11 +18,11 @@ public class Move : MonoBehaviour {
 
         if(Mathf.Abs(h) > 0.3f)
         {
-            _myRigid.AddForce(_speed * h * Vector3.right);
+            _myRigid.AddForce(_speed * h * Vector3.Scale(transform.right, direction));
         }
         if (Mathf.Abs(v) > 0.3f)
         {
-            _myRigid.AddForce(_speed * v * Vector3.forward);
+            _myRigid.AddForce(_speed * v * Vector3.Scale(transform.forward, direction));
         }
     }
 }
