@@ -14,4 +14,11 @@ public class Enemy : Entity {
     void Update () {
 	
 	}
+	
+	protected override IEnumerator Dead()
+	{
+		Destroy(gameObject);
+		
+		return base.Dead();
+	}
 }

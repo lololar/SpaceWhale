@@ -102,7 +102,7 @@ public class Entity : MonoBehaviour
         _render.material = _normal;
     }
 
-    protected IEnumerator Dead()
+    protected virtual IEnumerator Dead()
     {
         yield return 0;
     }
