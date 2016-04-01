@@ -17,6 +17,7 @@ public class HookView : MonoBehaviour {
         if (coll.CompareTag("Plateform") && PlateformManager.Instance._meteors.Contains(coll.gameObject))
         {
             PlateformManager.Instance._meteors.Remove(coll.gameObject);
+            coll.gameObject.GetComponent<Renderer>().material.color = Color.white;
         }
     }
 }

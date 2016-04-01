@@ -77,7 +77,6 @@ public class Entity : MonoBehaviour
                 if(!hitRender)
                 {
                     _render.material = _normal;
-                    hitRender = true;
                 }
                 else
                 {

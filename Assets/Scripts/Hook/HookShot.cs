@@ -13,6 +13,7 @@ public class HookShot : MonoBehaviour
 
     Coroutine _hookshot;
     private GameObject _targetMeteor;
+    private Vector3 _targetPoint;
     private GameObject _currentMeteor;
 
     // Use this for initialization
@@ -26,29 +27,6 @@ public class HookShot : MonoBehaviour
     {
         if (_hookshot == null)
         {
-            /*Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
-            Debug.DrawRay(ray.origin + Camera.main.transform.forward * 10, ray.direction * _range, Color.blue, 0.2f);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, _range) && hit.collider.gameObject && hit.collider.gameObject.CompareTag("HookZone"))
-            {
-                if (!_hookPoint)
-                {
-                    _hookPoint = hit.collider.gameObject;
-                    _hookPoint.GetComponentInChildren<HookPoint>().Targeted();
-                }
-            }
-            else if(_hookPoint)
-            {
-                _hookPoint.GetComponentInChildren<HookPoint>().Untargeted();
-                _hookPoint = null;
-            }
-        
-            if (Input.GetButtonDown("Hook") && _hookPoint)
-            {
-                Debug.Log("HookShot");
-                _hookshot = StartCoroutine(Hookshot());
-            }*/
-
             List<GameObject> meteors = PlateformManager.Instance._meteors;
             GameObject nearMeteor = null;
 
@@ -56,6 +34,7 @@ public class HookShot : MonoBehaviour
             for (int i = 0; i < meteors.Count; i++)
             {
                 GameObject meteor = meteors[i];
+                meteor.GetComponent<Renderer>().material.color = Color.green;
                 if(meteor != _currentMeteor)
                 {
                     if(nearMeteor)
@@ -71,11 +50,26 @@ public class HookShot : MonoBehaviour
                     }
                 }
             }
-            if(nearMeteor && Input.GetButtonDown("Hook"))
+            if(nearMeteor)
             {
-                _targetMeteor = nearMeteor;
-                _hookshot = StartCoroutine(Hookshot());
-                //transform.position = nearMeteor.transform.position + Vector3.up * 2.0f;
+                nearMeteor.GetComponent<Renderer>().material.color = Color.blue;
+                if (Input.GetButtonDown("Hook"))
+                {
+                    _targetMeteor = nearMeteor;
+
+                    Vector3 direction = _targetMeteor.transform.position - transform.position;
+
+                    _targetPoint = Vector3.Scale((Vector3.right * direction.x + Vector3.forward * direction.z).normalized, _targetMeteor.transform.lossyScale / 2) + _targetMeteor.transform.position;
+
+                    /*Ray ray = new Ray(transform.position, _targetPoint);
+                    RaycastHit hit;
+                    if (Physics.Raycast(ray, out hit) && hit.collider.gameObject)
+                    {
+                        Debug.Log(transform.position + "            " + _targetPoint + "             " + nearMeteor.transform.position);
+                    }*/
+
+                    _hookshot = StartCoroutine(Hookshot());
+                }
             }
         }
         
@@ -84,19 +78,18 @@ public class HookShot : MonoBehaviour
     public IEnumerator Hookshot()
     {
         Vector3 posDepart = transform.position;
-        Vector3 posArrivee = _targetMeteor.transform.position;
+        Vector3 posArrivee = _targetPoint;
         float timeNeed = (Vector3.Distance(posDepart, posArrivee) / _range) * _timeAtMaxRange;
         Vector3 displacementPerSecond = (- posDepart + posArrivee) / timeNeed;
         float currentTime = 0.0f;
 
         while ((currentTime += Time.deltaTime) < timeNeed)
-            {
+        {
             if(GetComponent<Rigidbody>())
             {
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
             }
             transform.position += displacementPerSecond * Time.deltaTime;
-            Debug.Log("LOL");
             yield return 0;
         }
 
@@ -111,7 +104,6 @@ public class HookShot : MonoBehaviour
             _hookshot = null;
         }
         transform.position = _currentMeteor.transform.FindChild("Endhook").position;
-        Debug.Log("EndHook");
     }
 
     void OnCollisionEnter(Collision coll)
@@ -121,7 +113,11 @@ public class HookShot : MonoBehaviour
             _currentMeteor = coll.gameObject;
             EndHookshot();
         }
-        else if(!coll.gameObject.CompareTag("Plateform"))
+    }
+
+    void OnCollisionExit(Collision coll)
+    {
+        if (coll.gameObject.CompareTag("Plateform") && coll.gameObject == _currentMeteor)
         {
             _currentMeteor = null;
         }
