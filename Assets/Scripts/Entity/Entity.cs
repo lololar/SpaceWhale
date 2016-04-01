@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
+using System;
 
 public class Entity : MonoBehaviour
 {
@@ -35,6 +36,15 @@ public class Entity : MonoBehaviour
         other.Hit(_damage * ratio);
     }
 
+    public Entity GetTarget(int v)
+    {
+        if(_targets.Count > v)
+        {
+            return _targets[v];
+        }
+        return null;
+    }
+
     public virtual void Hit(float damage)
     {
         _life -= damage;
@@ -60,7 +70,6 @@ public class Entity : MonoBehaviour
     {
         if (_targets.Contains(enemy))
         {
-            _targets = _targets.Where(entity => enemy != null).ToList();
             _targets.Remove(enemy);
         }
     }

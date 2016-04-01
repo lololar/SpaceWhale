@@ -14,22 +14,10 @@ public class PlateformManager : MonoBehaviour {
     }
 
     public List<GameObject> _meteors;
-    public float _refeshTime = 0.1f;
-    private bool _hasToRender = true;
 
     // Use this for initialization
     void Start ()
     {
         _meteors = new List<GameObject>();
-        //StartCoroutine(CheckVisible());
 	}
-
-    private IEnumerator CheckVisible()
-    {
-        while(_hasToRender)
-        {
-            yield return new WaitForSeconds(_refeshTime);
-        }
-        
-    }
 }
