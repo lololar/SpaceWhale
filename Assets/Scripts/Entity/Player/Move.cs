@@ -19,14 +19,18 @@ public class Move : MonoBehaviour {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
-        if(Mathf.Abs(h) > 0.3f)
+        if(ModeManager.Instance._currentMode == ModeManager.Mode.PLAYER)
         {
-            _myRigid.AddForce(_speed * h * Vector3.Scale(transform.right, direction));
+            if(Mathf.Abs(h) > 0.3f)
+            {
+                _myRigid.AddForce(_speed * h * Vector3.Scale(transform.right, direction));
+            }
+            if (Mathf.Abs(v) > 0.3f)
+            {
+                _myRigid.AddForce(_speed * v * Vector3.Scale(transform.forward, direction));
+            }
         }
-        if (Mathf.Abs(v) > 0.3f)
-        {
-            _myRigid.AddForce(_speed * v * Vector3.Scale(transform.forward, direction));
-        }
+
     }
 
     void OnTriggerEnter(Collider coll)

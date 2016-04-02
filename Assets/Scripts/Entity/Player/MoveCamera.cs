@@ -23,20 +23,23 @@ public class MoveCamera : MonoBehaviour
     
     void Update()
     {
-        float x = -Input.GetAxis("Mouse Y") * _mouseSensitivity.y + _gamepadSensitivity.y * Input.GetAxis("Vertical2") + _cameraPivot.eulerAngles.x;
-        float y = Input.GetAxis("Mouse X") * _mouseSensitivity.x + _gamepadSensitivity.y * Input.GetAxis("Horizontal2") + _cameraPivot.eulerAngles.y;
-
-        _cameraPivot.rotation = Quaternion.Euler(x, y, 0.0f);
-
-        if (_cameraPivot.eulerAngles.x < 360.0f - _minXRotation && _cameraPivot.eulerAngles.x > _maxXRotation)
+        if (ModeManager.Instance._currentMode == ModeManager.Mode.PLAYER)
         {
-            if (_cameraPivot.eulerAngles.x < (360.0f - _minXRotation - _maxXRotation) / 2)
+            float x = -Input.GetAxis("Mouse Y") * _mouseSensitivity.y + _gamepadSensitivity.y * Input.GetAxis("Vertical2") + _cameraPivot.eulerAngles.x;
+            float y = Input.GetAxis("Mouse X") * _mouseSensitivity.x + _gamepadSensitivity.y * Input.GetAxis("Horizontal2") + _cameraPivot.eulerAngles.y;
+
+            _cameraPivot.rotation = Quaternion.Euler(x, y, 0.0f);
+
+            if (_cameraPivot.eulerAngles.x < 360.0f - _minXRotation && _cameraPivot.eulerAngles.x > _maxXRotation)
             {
-                _cameraPivot.eulerAngles = new Vector3(_maxXRotation, _cameraPivot.eulerAngles.y, _cameraPivot.eulerAngles.z);
-            }
-            else if (_cameraPivot.eulerAngles.x >= (360.0f - _minXRotation - _maxXRotation) / 2)
-            {
-                _cameraPivot.eulerAngles = new Vector3(360f - _minXRotation, _cameraPivot.eulerAngles.y, _cameraPivot.eulerAngles.z);
+                if (_cameraPivot.eulerAngles.x < (360.0f - _minXRotation - _maxXRotation) / 2)
+                {
+                    _cameraPivot.eulerAngles = new Vector3(_maxXRotation, _cameraPivot.eulerAngles.y, _cameraPivot.eulerAngles.z);
+                }
+                else if (_cameraPivot.eulerAngles.x >= (360.0f - _minXRotation - _maxXRotation) / 2)
+                {
+                    _cameraPivot.eulerAngles = new Vector3(360f - _minXRotation, _cameraPivot.eulerAngles.y, _cameraPivot.eulerAngles.z);
+                }
             }
         }
 

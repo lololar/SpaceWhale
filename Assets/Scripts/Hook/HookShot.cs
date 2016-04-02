@@ -12,14 +12,16 @@ public class HookShot : MonoBehaviour
     public float _timeAtMaxRange;
 
     Coroutine _hookshot;
-    private GameObject _targetMeteor;
+    private GameObject _targetHookable;
     private Vector3 _targetPoint;
-    private GameObject _currentMeteor;
+    private GameObject _currentHookable;
 
     // Use this for initialization
     void Start()
     {
         _hook = GameObject.FindGameObjectWithTag("Hook");
+        _currentHookable = GameObject.Find("ShipPlat");
+        EndHookshot();
     }
 
     // Update is called once per frame
@@ -35,11 +37,11 @@ public class HookShot : MonoBehaviour
             {
                 GameObject meteor = meteors[i];
                 meteor.GetComponent<Renderer>().material.color = Color.green;
-                if(meteor != _currentMeteor)
+                if (meteor != _currentHookable)
                 {
-                    if(nearMeteor)
+                    if (nearMeteor)
                     {
-                        if(Vector3.Distance(transform.position, nearMeteor.transform.position) > Vector3.Distance(transform.position, meteor.transform.position))
+                        if (Vector3.Distance(transform.position, nearMeteor.transform.position) > Vector3.Distance(transform.position, meteor.transform.position))
                         {
                             nearMeteor = meteor;
                         }
@@ -50,16 +52,16 @@ public class HookShot : MonoBehaviour
                     }
                 }
             }
-            if(nearMeteor)
+            if (nearMeteor)
             {
                 nearMeteor.GetComponent<Renderer>().material.color = Color.blue;
                 if (Input.GetButtonDown("Hook"))
                 {
-                    _targetMeteor = nearMeteor;
+                    _targetHookable = nearMeteor;
 
-                    Vector3 direction = _targetMeteor.transform.position - transform.position;
+                    Vector3 direction = _targetHookable.transform.position - transform.position;
 
-                    _targetPoint = Vector3.Scale((Vector3.right * direction.x + Vector3.forward * direction.z).normalized, _targetMeteor.transform.lossyScale / 2) + _targetMeteor.transform.position;
+                    _targetPoint = Vector3.Scale((Vector3.right * direction.x + Vector3.forward * direction.z).normalized, _targetHookable.transform.lossyScale / 2) + _targetHookable.transform.position;
 
                     /*Ray ray = new Ray(transform.position, _targetPoint);
                     RaycastHit hit;
@@ -72,7 +74,7 @@ public class HookShot : MonoBehaviour
                 }
             }
         }
-        
+
     }
 
     public IEnumerator Hookshot()
@@ -80,12 +82,12 @@ public class HookShot : MonoBehaviour
         Vector3 posDepart = transform.position;
         Vector3 posArrivee = _targetPoint;
         float timeNeed = (Vector3.Distance(posDepart, posArrivee) / _range) * _timeAtMaxRange;
-        Vector3 displacementPerSecond = (- posDepart + posArrivee) / timeNeed;
+        Vector3 displacementPerSecond = (-posDepart + posArrivee) / timeNeed;
         float currentTime = 0.0f;
 
         while ((currentTime += Time.deltaTime) < timeNeed)
         {
-            if(GetComponent<Rigidbody>())
+            if (GetComponent<Rigidbody>())
             {
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
             }
@@ -93,33 +95,44 @@ public class HookShot : MonoBehaviour
             yield return 0;
         }
 
-
     }
 
     void EndHookshot()
     {
-        if(_hookshot != null)
+        if (_hookshot != null)
         {
             StopCoroutine(_hookshot);
             _hookshot = null;
         }
-        transform.position = _currentMeteor.transform.FindChild("Endhook").position;
+        transform.position = _currentHookable.transform.FindChild("Endhook").position;
     }
 
     void OnCollisionEnter(Collision coll)
     {
-        if (coll.gameObject.CompareTag("Plateform") && coll.gameObject != _currentMeteor)
+        if (coll.gameObject.CompareTag("Plateform") && coll.gameObject != _currentHookable)
         {
-            _currentMeteor = coll.gameObject;
-            EndHookshot();
+            _currentHookable = coll.gameObject;
+            if (_hookshot != null)
+            {
+                EndHookshot();
+            }
         }
     }
 
     void OnCollisionExit(Collision coll)
     {
-        if (coll.gameObject.CompareTag("Plateform") && coll.gameObject == _currentMeteor)
+        if (coll.gameObject.CompareTag("Plateform") && coll.gameObject == _currentHookable)
         {
-            _currentMeteor = null;
+            Ray ray = new Ray(transform.position + Vector3.down, Vector3.down);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit) && hit.collider.gameObject && hit.collider.gameObject.CompareTag("Plateform"))
+            {
+                _currentHookable = hit.collider.gameObject;
+            }
+            else
+            {
+                _currentHookable = null;
+            }
         }
     }
 }
