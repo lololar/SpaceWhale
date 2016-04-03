@@ -16,7 +16,7 @@ public class MoveCamera : MonoBehaviour
     void Start()
     {
         _cameraPivot = transform;
-        _cameraScript = transform.FindChild("Pivot").FindChild("Camera").GetComponent<Camera>();
+        _cameraScript = ModeManager.Instance._cameraPlayer.GetComponent<Camera>();
         Cursor.lockState = CursorLockMode.Locked;
         //Cursor.visible = false;
     }
@@ -25,8 +25,8 @@ public class MoveCamera : MonoBehaviour
     {
         if (ModeManager.Instance._currentMode == ModeManager.Mode.PLAYER)
         {
-            float x = -Input.GetAxis("Mouse Y") * _mouseSensitivity.y + _gamepadSensitivity.y * Input.GetAxis("Vertical2") + _cameraPivot.eulerAngles.x;
-            float y = Input.GetAxis("Mouse X") * _mouseSensitivity.x + _gamepadSensitivity.y * Input.GetAxis("Horizontal2") + _cameraPivot.eulerAngles.y;
+            float x = -Input.GetAxis("Mouse Y") * _mouseSensitivity.y * Time.deltaTime + _gamepadSensitivity.y * Input.GetAxis("Vertical2") * Time.deltaTime + _cameraPivot.eulerAngles.x;
+            float y = Input.GetAxis("Mouse X") * _mouseSensitivity.x * Time.deltaTime + _gamepadSensitivity.y * Input.GetAxis("Horizontal2") * Time.deltaTime + _cameraPivot.eulerAngles.y;
 
             _cameraPivot.rotation = Quaternion.Euler(x, y, 0.0f);
 

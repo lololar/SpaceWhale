@@ -22,7 +22,7 @@ public class Player : Entity {
 
 
     void Update () {
-	    if(Input.GetButtonDown("CAC") && animAtt == null)
+	    if(ModeManager.Instance._currentMode == ModeManager.Mode.PLAYER && Input.GetButtonDown("CAC") && animAtt == null)
         {
             animAtt = StartCoroutine(AttackAnim());
         }

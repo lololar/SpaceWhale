@@ -27,7 +27,7 @@ public class HookShot : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (_hookshot == null)
+        if (ModeManager.Instance._currentMode == ModeManager.Mode.PLAYER && _hookshot == null)
         {
             List<GameObject> meteors = PlateformManager.Instance._meteors;
             GameObject nearMeteor = null;
