@@ -4,7 +4,7 @@ using System;
 
 public class Player : Entity {
 
-    Coroutine animAtt;
+    Coroutine _animAtt;
 
     Transform _ship;
     GameObject _hook;
@@ -22,9 +22,9 @@ public class Player : Entity {
 
 
     void Update () {
-	    if(ModeManager.Instance._currentMode == ModeManager.Mode.PLAYER && Input.GetButtonDown("CAC") && animAtt == null)
+	    if(ModeManager.Instance._currentMode == ModeManager.Mode.PLAYER && Input.GetButtonDown("CAC") && _animAtt == null)
         {
-            animAtt = StartCoroutine(AttackAnim());
+            _animAtt = StartCoroutine(AttackAnim());
         }
 	}
 
@@ -34,29 +34,21 @@ public class Player : Entity {
 
         float animationFrame = 50;
 
-        bool isPastMid = false;
-
         while (currentTime + Values.Epsylon < _delayAttack)
         {
-            float x = -Mathf.Sin(currentTime * Values.PI / _delayAttack * 2.0f) * 45.0f;
+            /*float x = -Mathf.Sin(currentTime * Values.PI / _delayAttack * 2.0f) * 45.0f;
 
-            _hook.transform.localRotation = Quaternion.Euler(x, _hook.transform.rotation.y, _hook.transform.rotation.z);
+            _hook.transform.localRotation = Quaternion.Euler(x, _hook.transform.rotation.y, _hook.transform.rotation.z);*/
 
-            if (currentTime * 2.0f > _delayAttack && !isPastMid)
-            {
-                for (int i = 0; i < _targets.Count; i++)
-                {
-                    if(_targets[i])
-                        Attack(_targets[i], _CACDamageRatio);
-                }
-                isPastMid = true;
-            }
+            float y = -Mathf.Sin(currentTime * Values.PI / _delayAttack * 2.0f) * 45.0f;
+
+            _hook.transform.localRotation = Quaternion.Euler(_hook.transform.rotation.x, y, _hook.transform.rotation.z);
 
             currentTime += _delayAttack / animationFrame;
             
             yield return new WaitForSeconds(_delayAttack / animationFrame);
         }
-        animAtt = null;
+        _animAtt = null;
     }
 
     public void Respawn()

@@ -15,21 +15,12 @@ public class HookDetection : MonoBehaviour {
 
     }
 
+
     void OnTriggerEnter(Collider coll)
     {
         if (coll.CompareTag("Enemy"))
         {
-            Enemy enemy = coll.GetComponent<Enemy>();
-            _player.AddTarget(enemy);
-        }
-    }
-
-    void OnTriggerExit(Collider coll)
-    {
-        if (coll.CompareTag("Enemy"))
-        {
-            Enemy enemy = coll.GetComponent<Enemy>();
-            _player.RemoveTarget(enemy);
+            _player.Attack(coll.GetComponent<Entity>(), _player._CACDamageRatio);
         }
     }
 }

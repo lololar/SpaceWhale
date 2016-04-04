@@ -11,7 +11,7 @@ public class Laser : MonoBehaviour {
         _turret = GameObject.FindGameObjectWithTag("LaserTurret").GetComponent<LaserTurret>();
 	}
 	
-    void OnTriggerEnter(Collider coll)
+    public void OnTriggerEnter(Collider coll)
     {
         if(coll.CompareTag("Enemy"))
         {
