@@ -35,7 +35,7 @@ public class ModeManager : MonoBehaviour {
         _cameraLaserTurret = GameObject.Find("CameraLaserTurret");
         _cameraHarpoon = GameObject.Find("CameraHarpoon");
 
-        ChangeMode(Mode.LASERTURRET);
+        ChangeMode(Mode.PLAYER);
 	}
 
     public void ChangeMode(Mode newMode)

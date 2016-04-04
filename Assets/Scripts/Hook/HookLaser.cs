@@ -33,22 +33,19 @@ public class HookLaser : MonoBehaviour {
                 if (!_enemy)
                 {
                     _enemy = hit.collider.gameObject;
-                    //_hookPoint.GetComponentInChildren<HookPoint>().Targeted();
                 }
                 else
                 {
-                    Debug.Log("Has Enemy");
+
                 }
             }
             else if (_enemy)
             {
-                //_hookPoint.GetComponentInChildren<HookPoint>().Untargeted();
                 _enemy = null;
             }
 
             if (Input.GetButtonDown("Laser") && _enemy)
             {
-                Debug.Log("Laser");
                 _player.Attack(_enemy.GetComponent<Entity>(), _laserDamageRatio);
                 _laser = StartCoroutine(Laser());
             }
@@ -58,7 +55,6 @@ public class HookLaser : MonoBehaviour {
     private IEnumerator Laser()
     {
         yield return new WaitForSeconds(_reloadTime);
-        Debug.Log("Reloaded");
         _laser = null;
     }
 }

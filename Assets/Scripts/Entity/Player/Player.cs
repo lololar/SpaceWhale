@@ -46,7 +46,8 @@ public class Player : Entity {
             {
                 for (int i = 0; i < _targets.Count; i++)
                 {
-                    Attack(_targets[i], _CACDamageRatio);
+                    if(_targets[i])
+                        Attack(_targets[i], _CACDamageRatio);
                 }
                 isPastMid = true;
             }

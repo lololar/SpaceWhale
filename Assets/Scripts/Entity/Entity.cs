@@ -50,7 +50,7 @@ public class Entity : MonoBehaviour
         _life -= damage;
         if(_life <= Values.Epsylon)
         {
-            StartCoroutine(Dead());
+            Dead();
         }
         else
         {
@@ -102,8 +102,8 @@ public class Entity : MonoBehaviour
         _render.material = _normal;
     }
 
-    protected virtual IEnumerator Dead()
+    protected virtual void Dead()
     {
-        yield return 0;
+
     }
 }

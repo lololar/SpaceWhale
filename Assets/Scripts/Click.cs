@@ -15,7 +15,6 @@ public class Click : MonoBehaviour {
 
         /*if(Input.GetMouseButtonDown(0))
         {
-            Debug.Log("nsidngsdf");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))

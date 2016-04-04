@@ -51,8 +51,6 @@ public class LaserTurret : MonoBehaviour
             bool droit = Input.GetButton("FireRightLaser");
             bool gauche = Input.GetButton("FireLeftLaser");
 
-            Debug.Log(droit + "                  " + gauche);
-
             if(_combinedBeams)
             {
                 if(Vector3.Distance(_rightLaser.transform.position, _leftLaser.transform.position) > _distanceMinBetLaser)

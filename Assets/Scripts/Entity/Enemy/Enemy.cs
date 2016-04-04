@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class Enemy : Entity {
 
@@ -15,10 +16,9 @@ public class Enemy : Entity {
 	
 	}
 	
-	protected override IEnumerator Dead()
+	protected override void Dead()
 	{
+		base.Dead();
 		Destroy(gameObject);
-		
-		return base.Dead();
 	}
 }

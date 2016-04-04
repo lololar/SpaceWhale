@@ -5,7 +5,6 @@ public class MoveCamera : MonoBehaviour
 {
 
     Transform _cameraPivot;
-    Camera _cameraScript;
 
     public float _minXRotation;
     public float _maxXRotation;
@@ -16,7 +15,6 @@ public class MoveCamera : MonoBehaviour
     void Start()
     {
         _cameraPivot = transform;
-        _cameraScript = ModeManager.Instance._cameraPlayer.GetComponent<Camera>();
         Cursor.lockState = CursorLockMode.Locked;
         //Cursor.visible = false;
     }
@@ -43,10 +41,14 @@ public class MoveCamera : MonoBehaviour
             }
         }
 
+#if UnityEditor
+
         if (Application.isEditor && Input.GetKeyDown(KeyCode.Escape))
         {
             UnityEditor.EditorApplication.isPlaying = false;
         }
+
+#endif
 
     }
 }

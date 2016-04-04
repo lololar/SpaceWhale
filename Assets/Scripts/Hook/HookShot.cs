@@ -7,7 +7,7 @@ public class HookShot : MonoBehaviour
 {
     public float _range;
 
-    GameObject _hook;
+    Move _move;
     public float _minDistanceUpPlateforme;
     public float _timeAtMaxRange;
 
@@ -19,7 +19,7 @@ public class HookShot : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        _hook = GameObject.FindGameObjectWithTag("Hook");
+        _move = GetComponent<Move>();
         _currentHookable = GameObject.Find("ShipPlat");
         EndHookshot();
     }
@@ -36,7 +36,10 @@ public class HookShot : MonoBehaviour
             for (int i = 0; i < meteors.Count; i++)
             {
                 GameObject meteor = meteors[i];
-                meteor.GetComponent<Renderer>().material.color = Color.green;
+                if(meteor.GetComponent<Renderer>())
+                {
+                    meteor.GetComponent<Renderer>().material.color = Color.green;
+                }
                 if (meteor != _currentHookable)
                 {
                     if (nearMeteor)
@@ -54,7 +57,10 @@ public class HookShot : MonoBehaviour
             }
             if (nearMeteor)
             {
-                nearMeteor.GetComponent<Renderer>().material.color = Color.blue;
+                if (nearMeteor.GetComponent<Renderer>())
+                {
+                    nearMeteor.GetComponent<Renderer>().material.color = Color.blue;
+                }
                 if (Input.GetButtonDown("Hook"))
                 {
                     _targetHookable = nearMeteor;
@@ -62,13 +68,6 @@ public class HookShot : MonoBehaviour
                     Vector3 direction = _targetHookable.transform.position - transform.position;
 
                     _targetPoint = Vector3.Scale((Vector3.right * direction.x + Vector3.forward * direction.z).normalized, _targetHookable.transform.lossyScale / 2) + _targetHookable.transform.position;
-
-                    /*Ray ray = new Ray(transform.position, _targetPoint);
-                    RaycastHit hit;
-                    if (Physics.Raycast(ray, out hit) && hit.collider.gameObject)
-                    {
-                        Debug.Log(transform.position + "            " + _targetPoint + "             " + nearMeteor.transform.position);
-                    }*/
 
                     _hookshot = StartCoroutine(Hookshot());
                 }
@@ -104,6 +103,11 @@ public class HookShot : MonoBehaviour
             StopCoroutine(_hookshot);
             _hookshot = null;
         }
+        GoToPosition();
+    }
+
+    void GoToPosition()
+    {
         transform.position = _currentHookable.transform.FindChild("Endhook").position;
     }
 
@@ -112,10 +116,19 @@ public class HookShot : MonoBehaviour
         if (coll.gameObject.CompareTag("Plateform") && coll.gameObject != _currentHookable)
         {
             _currentHookable = coll.gameObject;
-            if (_hookshot != null)
+            if(_move._isAttached)
             {
-                EndHookshot();
+                _move.ToggleAttach();
+                GoToPosition();
             }
+            else
+            {
+                if (_hookshot != null)
+                {
+                    EndHookshot();
+                }
+            }
+            
         }
     }
 
@@ -123,7 +136,7 @@ public class HookShot : MonoBehaviour
     {
         if (coll.gameObject.CompareTag("Plateform") && coll.gameObject == _currentHookable)
         {
-            Ray ray = new Ray(transform.position + Vector3.down, Vector3.down);
+            Ray ray = new Ray(transform.position, Vector3.down);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit) && hit.collider.gameObject && hit.collider.gameObject.CompareTag("Plateform"))
             {

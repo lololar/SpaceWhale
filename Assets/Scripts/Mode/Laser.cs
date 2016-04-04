@@ -13,7 +13,6 @@ public class Laser : MonoBehaviour {
 	
     void OnTriggerEnter(Collider coll)
     {
-        Debug.Log(coll.tag);
         if(coll.CompareTag("Enemy"))
         {
             Entity ent = coll.GetComponent<Enemy>();
