@@ -4,7 +4,8 @@ using System;
 
 public class Player : Entity {
 
-    Coroutine _animAtt;
+    [HideInInspector]
+    public Coroutine _animAtt;
 
     Transform _ship;
     GameObject _hook;

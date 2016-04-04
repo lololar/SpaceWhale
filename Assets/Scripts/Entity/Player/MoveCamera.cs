@@ -24,7 +24,7 @@ public class MoveCamera : MonoBehaviour
         if (ModeManager.Instance._currentMode == ModeManager.Mode.PLAYER)
         {
             float x = -Input.GetAxis("Mouse Y") * _mouseSensitivity.y * Time.deltaTime + _gamepadSensitivity.y * Input.GetAxis("Vertical2") * Time.deltaTime + _cameraPivot.eulerAngles.x;
-            float y = Input.GetAxis("Mouse X") * _mouseSensitivity.x * Time.deltaTime + _gamepadSensitivity.y * Input.GetAxis("Horizontal2") * Time.deltaTime + _cameraPivot.eulerAngles.y;
+            float y = Input.GetAxis("Mouse X") * _mouseSensitivity.x * Time.deltaTime + _gamepadSensitivity.x * Input.GetAxis("Horizontal2") * Time.deltaTime + _cameraPivot.eulerAngles.y;
 
             _cameraPivot.rotation = Quaternion.Euler(x, y, 0.0f);
 

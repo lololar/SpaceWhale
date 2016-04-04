@@ -18,7 +18,7 @@ public class HookDetection : MonoBehaviour {
 
     void OnTriggerEnter(Collider coll)
     {
-        if (coll.CompareTag("Enemy"))
+        if (coll.CompareTag("Enemy") && _player._animAtt != null)
         {
             _player.Attack(coll.GetComponent<Entity>(), _player._CACDamageRatio);
         }

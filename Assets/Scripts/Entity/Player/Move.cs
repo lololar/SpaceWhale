@@ -98,9 +98,9 @@ public class Move : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider coll)
+    void OnCollisionEnter(Collision coll)
     {
-        if (coll.gameObject && coll.CompareTag("DeathZone"))
+        if (coll.gameObject && coll.gameObject.CompareTag("DeathZone"))
         {
             _player.Respawn();
         }
